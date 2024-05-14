@@ -17,15 +17,19 @@ export default function App() { //facciata principale
   const [userStore, setUserStore] = useState({
     loading: false,
     isLoggedIn: false,
-    username: ''
+    username: '',
+    role: '',
+    token: ''
   })
 
-  //metodo che userà la API
-  const setLogin = (username) => {
+  //metodo usato da LoginForm per popolare i dati sull'utente, dopo aver fatto il login con l'apposita API
+  const setLogin = (username, role, token) => {
     setUserStore({
       loading: false,
       isLoggedIn: true,
-      username: username
+      username: username,
+      role: role,
+      token: token
     })
   }
 
@@ -55,7 +59,8 @@ export default function App() { //facciata principale
   return (
     <>{/*questo è un fragment React che permette di contenere più componenti al suo interno*/}
       {/*{userStore.isLoggedIn ? <NavBarUser doLogout={doLogout} /> : <Navbar />}*/}
-      {userStore.isLoggedIn ? <NavbarUser/> : <Navbar />}
+      <></>
+      {userStore.isLoggedIn ? (userStore.role==='user' ? <NavbarUser /> : <NavbarAdmin />): <Navbar />}
       {/*{userStore.isLoggedIn ? <NavbarAdmin /> : <Navbar />}*/}
 
       <div className='app'>
@@ -68,10 +73,8 @@ export default function App() { //facciata principale
             </div>) : (<> {userStore.isLoggedIn === false ? (< LoginForm setLogin={setLogin} />) : (
               <>
                 {/*Benvenuto {userStore.username}*/}
-                {/*<div>BENVENUTO, per effettuare le sue azioni da ADMIN apra il menù in alto a sinistra</div>*/}
                 <div className='app'>
-                  <HomePage />
-                  {/*<HomePageAdmin />*/}
+                  {userStore.role==='utente' ? (<HomePage />) : (<HomePageAdmin />)}
                   <div className='container'>
                   </div>
                 </div></>)}

@@ -22,7 +22,7 @@ export default function LoginForm(props)  {
     setButtonDisabled(true)
 
     try {
-      let res = await fetch('http://localhost:8080/api/computers/login', {
+      let res = await fetch('http://localhost:8080/api/login', {
         method: 'post',
         headers: {
           'Accept': 'application/json',
@@ -37,7 +37,7 @@ export default function LoginForm(props)  {
       let result = await res.json();
       if (result && result.message==="success") {
         console.log("user logged in successfully");
-        props.setLogin(username)
+        props.setLogin(username, result.role, result.token)
       } else {
         console.log("user login failed");
         resetForm();
