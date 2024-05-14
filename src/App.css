@@ -1,0 +1,135 @@
+body, html, #root, .app, .container {
+  width: 100%;
+  height: 100%;
+}
+
+.container {
+  font-size: 28px;
+  color: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+}
+
+.loginForm {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 400px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.loginText {
+  font-size: 40px;
+  color: #000;
+  text-align: center; 
+}
+
+.inputField {
+  padding-top: 16px;
+}
+
+.input {
+  box-sizing: border-box;
+  outline: none;
+  border: solid 2px #000;
+  border-radius: 4px;
+  color: #292929;
+  width: 100%;
+  padding: 12px;
+  font-size: 14px;
+  background: rgba(255, 255, 255, 1);
+}
+
+.submitButton .btn  {
+  color: #fff;
+  background: #000;
+  margin-top: 20px;
+  padding-top: 1px; 
+  width: 100%;
+  min-width: 280px;
+  padding: 12px;
+  font-size: 20px;
+  font-weight: bold;
+  border: 2px solid #fff;
+  border-radius: 4px;
+  background-color: #000;
+  cursor: pointer;
+  box-shadow: none; 
+}
+
+.submitButton .btn:hover {
+  color: #000; 
+  border: 2px solid #000; 
+  background-color: #fff; 
+  font-size: 20px;
+}
+
+.submitButtonDisabled {
+  color: #ccc; 
+  background-color: #e0e0e0; 
+  border: 2px solid #ccc; 
+  cursor: not-allowed; 
+}
+
+.scanner-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; 
+}
+
+.scannerPageButton {
+  color: #fff;
+  background-color: #007bff;
+  border-color: #007bff;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  margin-right: 20px; 
+}
+
+.scannerPageButton:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+.submitButtonDisabled {
+  color: #ccc; 
+  background-color: #e0e0e0; 
+  border: 2px solid #ccc; 
+  padding: 10px 20px;
+  cursor: not-allowed; 
+  width: auto; 
+  font-size: 16px;  
+  margin-right: 20px; 
+
+}
+
+.goBackButton {
+  color: #fff;
+  background-color: #67dc35;
+  border-color: #67dc35;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.goBackButton:hover {
+  background-color: #368115;
+  border-color: #368115;
+}
+
+.custom-modal {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 200px);
+}
+
