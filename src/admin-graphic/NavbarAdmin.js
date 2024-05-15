@@ -4,7 +4,8 @@ import { TiThMenuOutline } from "react-icons/ti";
 import Modal from 'react-bootstrap/Modal';
 import LoginForm from '../components-login/LoginForm';
 import ModifyComputerStatus from './api-call-computers/ModifyComputerStatus';
-import GetNumberPc from './api-call-computers/GetNumberPc';// Importa il componente GetNumberPc
+import GetNumberPc from './api-call-computers/GetNumberPc';
+import GetSinglePc from './api-call-computers/GetSinglePc';
 
 
 
@@ -60,8 +61,8 @@ function NavbarAdmin() {
                                 </h2>
                                 <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                                     <div className="list-group">
-                                        <button type="button" className="list-group-item list-group-item-action" onClick={() => openModal(<GetNumberPc />)}>Visualizza numero totale di PC</button>
-                                        <button type="button" className="list-group-item list-group-item-action">Visualizza caratteristiche di un singolo PC</button>
+                                       <button type="button" className="list-group-item list-group-item-action" onClick={() => openModal(<GetNumberPc isOpen={showModal} onClose={closeModal}/>)}>Visualizza numero totale di PC</button>
+                                        <button type="button" className="list-group-item list-group-item-action" onClick={() => {console.log("entrato"); openModal(<GetSinglePc/>)}}>Visualizza caratteristiche di un singolo PC</button>
                                         <button type="button" className="list-group-item list-group-item-action">Aggiorna lo stato di un PC</button>
                                     </div>
                                     {/*<div class="accordion-body"></div>*/}

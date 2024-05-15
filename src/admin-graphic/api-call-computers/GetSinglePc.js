@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Modal } from 'react-bootstrap'; // Importa il componente Modal di Bootstrap
+import Select  from 'react-select';
 
-const GetNumberPc = ({ isOpen, onClose }) => {
-    const [numeroPc, setNumeroPc] = useState(null);
+const GetSinglePc = ({ isOpen, onClose }) => {
+    const [pcs, setPcs] = useState();
+    console.log("sono entrato single")
 
-    console.log("sono entrato count")
     useEffect(() => {
-        const getNumeroPc = async () => {
+        const getPcs = async () => {
             try {
                 const response = await fetch("http://localhost:8090/api/computers/count");
                 if (!response.ok) {
@@ -14,9 +15,10 @@ const GetNumberPc = ({ isOpen, onClose }) => {
                 }
                 const jsonData = await response.json();
                 console.log(jsonData)
-                console.log("Mostra numero pc totali nel db");
+                console.log("Mostra lista pc");
                 if (jsonData && typeof jsonData.count !== 'undefined') {
-                    setNumeroPc(jsonData.count);
+                    let temp = jsonData.map((element) => {return {label: element.nome, value:element.id}})
+                    setPcs(temp);
                 } else {
                     throw new Error("Dati non validi nella risposta JSON");
                 }
@@ -26,7 +28,7 @@ const GetNumberPc = ({ isOpen, onClose }) => {
         };
 
         if (isOpen) {
-            getNumeroPc();
+            getPcs();
         }
     }, [isOpen]);
 
@@ -37,12 +39,12 @@ const GetNumberPc = ({ isOpen, onClose }) => {
             dialogClassName="custom-modal" // Opzionale: aggiungi classi personalizzate al modal
         >
             <Modal.Header closeButton>
-                <Modal.Title>NUMERO DI PC DISPONIBILI A SCUOLA</Modal.Title>
+                <Modal.Title>SPECIFICHE DI UN SINGOLO PC</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <div style={{ textAlign: 'center' }}>
-                    {numeroPc !== null ? (
-                        <p>Numero PC disponibili: {numeroPc}</p>
+                    {pcs ? (
+                            <Select isSearchable options={pcs} isClearable/>
                     ) : (
                         <p>Caricamento...</p>
                     )}
@@ -52,4 +54,4 @@ const GetNumberPc = ({ isOpen, onClose }) => {
     );
 };
 
-export default GetNumberPc;
+export default GetSinglePc;
