@@ -1,45 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import { Modal } from 'react-bootstrap';
 import Select from 'react-select';
+import Form from 'react-bootstrap/Form';
 
 const GetSinglePc = ({ trigger }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [pcs, setPcs] = useState();
+    const [pcsData, setPcsData] = useState();
     const [selectedPc, setSelectedPc] = useState();
 
     const openModal = () => setIsOpen(true);
     const closeModal = () => setIsOpen(false);
 
     const handleOptionChange = (selectedOption) => { //aggiorna osservazioni e data ultimo aggiornamento
-        console.log(selectedOption)
-        setSelectedPc(selectedOption.value.id)
+        console.log(selectedOption.target.value)
+        setSelectedPc(pcsData[selectedOption.target.value])
     }
 
     useEffect(() => {
-        const getPcs = async () => {
-            try {
-                const response = await fetch("http://localhost:8090/api/computers");
-                if (!response.ok) {
-                    throw new Error("Errore nella richiesta HTTP: " + response.status);
-                }
-                const jsonData = await response.json();
-                if (jsonData) {
-                    let temp = jsonData.map((element) => {console.log(element); return { label: element.nome, value: element } });
-                    setPcs(temp);
-                } else {
-                    throw new Error("Dati non validi nella risposta JSON");
-                }
-            } catch (error) {
-                console.error("Errore durante la richiesta di numero PC:", error);
-            }
-        };
-
-        if (isOpen) {
+        if (!pcs && isOpen) {
             getPcs();
         }
-    }, [isOpen]);
+    }, [isOpen, pcs]);
 
-
+    const getPcs = async () => {
+        try {
+            const response = await fetch("http://localhost:8090/api/computers");
+            if (!response.ok) {
+                throw new Error("Errore nella richiesta HTTP: " + response.status);
+            }
+            const jsonData = await response.json();
+            if (jsonData) {
+                setPcsData(jsonData)
+                setPcs(jsonData.map((element, index) => {return <><option value={index}>{element.nome}</option></>}));
+            } else {
+                throw new Error("Dati non validi nella risposta JSON");
+            }
+        } catch (error) {
+            console.error("Errore durante la richiesta di numero PC:", error);
+        }
+    };
     
     return (
         <>
@@ -51,27 +51,27 @@ const GetSinglePc = ({ trigger }) => {
                 <Modal.Body>
                     <div style={{ textAlign: 'center' }}>
                         {pcs ? (
-                        <Select isSearchable options={pcs} closeMenuOnSelect = {false} onChange={handleOptionChange} setValue={selectedPc} />
+                            <Form.Select onChange={handleOptionChange}>
+                                {pcs}
+                            </Form.Select>
                         ) : (
                             <p>Caricamento...</p>
                         )}
                         { selectedPc ? (
-                            <>
-                                <>nome: {selectedPc.nome}</>
+                            <div style={{margin: "30px"}}>
+                                <>&#x2022;Numero inventario: {selectedPc.numero_inventario}</>
                                 <br/>
-                                <>Numero inventario: {selectedPc.numero_inventario}</>
+                                <>&#x2022;Indirizzo MAC: {selectedPc.mac_address_wifi}</>
                                 <br/>
-                                <>Indirizzo MAC: {selectedPc.mac_address_wifi}</>
+                                <>&#x2022;Specifiche: {selectedPc.note}</>
                                 <br/>
-                                <>Specifiche: {selectedPc.note}</>
+                                <>&#x2022;Data dell'ultimo aggiornamento: {new Date(selectedPc.data_ultimo_aggiornamento).toLocaleString('it-IT', {dateStyle: "short"})}</>
                                 <br/>
-                                <>Data dell'ultimo aggiornamento: {selectedPc.data_ultimo_aggiornamento.toLocaleString('it-IT', {dateStyle: "short"})}</>
+                                {selectedPc.osservazioni!=="" && selectedPc.osservazioni ? (<>&#x2022;Osservazioni: {selectedPc.osservazioni}<br/></>) : (<></>)}
+                                <>&#x2022;Status corrente: {selectedPc.status}</>
                                 <br/>
-                                {selectedPc.osservazioni!=="" && !selectedPc.osservazioni ? (<>Osservazioni: {selectedPc.osservazioni}<br/></>) : (<></>)}
-                                <>Status corrente: {selectedPc.status}</>
-                                <br/>
-                                {selectedPc.status==="disponibile" ? (<>Armadio corrente: {selectedPc.armadio}<br/></>) : (<></>)}
-                            </>
+                                {selectedPc.status==="disponibile" ? (<>&#x2022;Armadio corrente: {selectedPc.armadio}<br/></>) : (<></>)}
+                            </div>
                             
                         ) : (
                             <></>
