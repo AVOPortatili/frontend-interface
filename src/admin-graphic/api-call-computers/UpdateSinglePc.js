@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal } from 'react-bootstrap';
 import Select from 'react-select';
 
-const GetSinglePc = ({ trigger }) => {
+const UpdateSinglePc = ({ trigger }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [pcs, setPcs] = useState();
     const [selectedPc, setSelectedPc] = useState();
@@ -24,7 +24,7 @@ const GetSinglePc = ({ trigger }) => {
                 }
                 const jsonData = await response.json();
                 if (jsonData) {
-                    let temp = jsonData.map((element) => {console.log(element); return { label: element.nome, value: element } });
+                    let temp = jsonData.map((element) => { return { label: element.nome, value: element.id } });
                     setPcs(temp);
                 } else {
                     throw new Error("Dati non validi nella risposta JSON");
@@ -46,37 +46,16 @@ const GetSinglePc = ({ trigger }) => {
             {React.cloneElement(trigger, { onClick: openModal })}
             <Modal show={isOpen} onHide={closeModal} dialogClassName="custom-modal">
                 <Modal.Header closeButton>
-                    <Modal.Title>CARATTERISTICHE DI UN SINGOLO PC</Modal.Title>
+                    <Modal.Title>SPECIFICHE DI UN SINGOLO PC</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div style={{ textAlign: 'center' }}>
                         {pcs ? (
-                        <Select isSearchable options={pcs} closeMenuOnSelect = {false} onChange={handleOptionChange} setValue={selectedPc} />
+                            <Select isSearchable options={pcs} isClearable onChange={(e) => {setSelectedPc(e.value)}} />
                         ) : (
                             <p>Caricamento...</p>
                         )}
-                        { selectedPc ? (
-                            <>
-                                <>nome: {selectedPc.nome}</>
-                                <br/>
-                                <>Numero inventario: {selectedPc.numero_inventario}</>
-                                <br/>
-                                <>Indirizzo MAC: {selectedPc.mac_address_wifi}</>
-                                <br/>
-                                <>Specifiche: {selectedPc.note}</>
-                                <br/>
-                                <>Data dell'ultimo aggiornamento: {selectedPc.data_ultimo_aggiornamento.toLocaleString('it-IT', {dateStyle: "short"})}</>
-                                <br/>
-                                {selectedPc.osservazioni!=="" && !selectedPc.osservazioni ? (<>Osservazioni: {selectedPc.osservazioni}<br/></>) : (<></>)}
-                                <>Status corrente: {selectedPc.status}</>
-                                <br/>
-                                {selectedPc.status==="disponibile" ? (<>Armadio corrente: {selectedPc.armadio}<br/></>) : (<></>)}
-                            </>
-                            
-                        ) : (
-                            <></>
-                        )
-                        }
+                        <input type="checkbox" id="dateCheck" value="dateCheck" onChange={(e) => {console.log("PLACEHOLDER")}}/>
                     </div>
 
                 </Modal.Body>
@@ -85,4 +64,4 @@ const GetSinglePc = ({ trigger }) => {
     );
 };
 
-export default GetSinglePc;
+export default UpdateSinglePc;

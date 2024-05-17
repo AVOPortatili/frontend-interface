@@ -102,7 +102,7 @@ function NavbarAdmin() {
                     </div>
                 </div>
             </nav>
-
+{/* 
             <Modal show={showModal} onHide={closeModal} dialogClassName="custom-modal">
                 <Modal.Header closeButton>
                     <Modal.Title>{showLogoutButtons ? "CONFERMA LOGOUT" : ""}</Modal.Title>
@@ -116,7 +116,7 @@ function NavbarAdmin() {
                         <button className="btn btn-primary" onClick={closeModal}>SI</button>
                     </Modal.Footer>
                 )}
-            </Modal>
+            </Modal> */}
         </>
     );
 }
