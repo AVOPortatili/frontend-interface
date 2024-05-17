@@ -1,5 +1,5 @@
 //import './App.css';
-import React, { useState, useEffect } from 'react';
+/*import React, { useState, useEffect } from 'react';
 import NavbarAdmin from '../NavbarAdmin';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -117,4 +117,4 @@ const ModifyComputerStatus = () => {
     );
 };
 
-export default ModifyComputerStatus;
+export default ModifyComputerStatus;*/

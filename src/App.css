@@ -133,3 +133,22 @@ body, html, #root, .app, .container {
   min-height: calc(100vh - 200px);
 }
 
+
+/*schermi grandi (come laptop o computer in orizzontale) */
+.offcanvas-custom {
+  width: 25% !important;
+}
+
+/*schermi medi (come tablet in verticale) */
+@media (max-width: 992px) {
+  .offcanvas-custom {
+      width: 35% !important;
+  }
+}
+
+/*schermi piccoli (come smartphone) */
+@media (max-width: 768px) {
+  .offcanvas-custom {
+      width: 70% !important;
+  }
+}

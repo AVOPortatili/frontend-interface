@@ -7,10 +7,6 @@ import NavbarUser from './components-graphic/NavbarUser';
 import NavbarAdmin from './admin-graphic/NavbarAdmin';
 import HomePage from './HomePage';
 import HomePageAdmin from './admin-graphic/HomePageAdmin';
-import ScannerPage from './ScannerPage';
-import ResourceComputers from './admin-graphic/api-call-computers/ModifyComputerStatus';
-//import ResourceComputers from '.admin-graphic/api-call-computers/ResourceComputers'; //importa il componente ResourceComputers
-
 
 export default function App() { //facciata principale 
 
@@ -60,7 +56,9 @@ export default function App() { //facciata principale
     <>{/*questo è un fragment React che permette di contenere più componenti al suo interno*/}
       {/*{userStore.isLoggedIn ? <NavBarUser doLogout={doLogout} /> : <Navbar />}*/}
       <></>
-      {userStore.isLoggedIn ? (userStore.role==='user' ? <NavbarUser /> : <NavbarAdmin />): <Navbar />}
+      {userStore.isLoggedIn ? (userStore.role==='utente' ? <NavbarUser /> : <NavbarAdmin />): <Navbar />}
+      {/*{userStore.isLoggedIn ? (userStore.role==='user' ? <NavbarUser /> : <NavbarAdmin />): <Navbar />}*/}
+
       {/*{userStore.isLoggedIn ? <NavbarAdmin /> : <Navbar />}*/}
 
       <div className='app'>

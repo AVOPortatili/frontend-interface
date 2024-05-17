@@ -1,6 +1,6 @@
 import '../App.css';
 import React, { useState, useEffect } from 'react';
-import ScannerPage from '../ScannerPage';
+import ScannerPageAdmin from './ScannerPageAdmin';
 
 const HomePageAdmin = () => {
     const [showScanner, setShowScanner] = useState(false); //stato per controllare se mostrare o meno ScannerPage
@@ -12,7 +12,7 @@ const HomePageAdmin = () => {
 
     //se showScanner è true, mostra ScannerPage
     if (showScanner) {
-        return <ScannerPage />;
+        return <ScannerPageAdmin />;
     }
 
     //altrimenti, mostra i pulsanti nella home page

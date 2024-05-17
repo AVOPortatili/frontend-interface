@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Modal } from 'react-bootstrap'; // Importa il componente Modal di Bootstrap
+import { Modal } from 'react-bootstrap';
 
-const GetNumberPc = ({ isOpen, onClose }) => {
+const GetNumberPc = ({ trigger }) => {
+    const [isOpen, setIsOpen] = useState(false);
     const [numeroPc, setNumeroPc] = useState(null);
 
-    console.log("sono entrato count")
+    const openModal = () => setIsOpen(true);
+    const closeModal = () => setIsOpen(false);
+
     useEffect(() => {
         const getNumeroPc = async () => {
             try {
@@ -13,8 +16,6 @@ const GetNumberPc = ({ isOpen, onClose }) => {
                     throw new Error("Errore nella richiesta HTTP: " + response.status);
                 }
                 const jsonData = await response.json();
-                console.log(jsonData)
-                console.log("Mostra numero pc totali nel db");
                 if (jsonData && typeof jsonData.count !== 'undefined') {
                     setNumeroPc(jsonData.count);
                 } else {
@@ -31,24 +32,23 @@ const GetNumberPc = ({ isOpen, onClose }) => {
     }, [isOpen]);
 
     return (
-        <Modal
-            show={isOpen} // Utilizza la prop 'show' per mostrare/nascondere il modal
-            onHide={onClose} // Usa la prop 'onHide' per gestire la chiusura del modal
-            dialogClassName="custom-modal" // Opzionale: aggiungi classi personalizzate al modal
-        >
-            <Modal.Header closeButton>
-                <Modal.Title>NUMERO DI PC DISPONIBILI A SCUOLA</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <div style={{ textAlign: 'center' }}>
-                    {numeroPc !== null ? (
-                        <p>Numero PC disponibili: {numeroPc}</p>
-                    ) : (
-                        <p>Caricamento...</p>
-                    )}
-                </div>
-            </Modal.Body>
-        </Modal>
+        <>
+            {React.cloneElement(trigger, { onClick: openModal })}
+            <Modal show={isOpen} onHide={closeModal} dialogClassName="custom-modal">
+                <Modal.Header closeButton>
+                    <Modal.Title>NUMERO DI PC DISPONIBILI A SCUOLA</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div style={{ textAlign: 'center' }}>
+                        {numeroPc !== null ? (
+                            <p>Numero PC disponibili: {numeroPc}</p>
+                        ) : (
+                            <p>Caricamento...</p>
+                        )}
+                    </div>
+                </Modal.Body>
+            </Modal>
+        </>
     );
 };
 
