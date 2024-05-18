@@ -6,12 +6,14 @@ import GetNumberPc from './api-call-computers/GetNumberPc';
 import GetSinglePc from './api-call-computers/GetSinglePc';
 import GetNumberPcPerArmadi from './api-call-armadi/GetNumberPcPerArmadi';
 import GetAllArmadi from './api-call-armadi/GetAllArmadi';
+import ModifyComputerStatus from './api-call-computers/ModifyComputerStatus';
 
 function NavbarAdmin() {
     const [showModal, setShowModal] = useState(false);
     const [modalContent, setModalContent] = useState("");
     const [showLogoutButtons, setShowLogoutButtons] = useState(false);
     const [redirectToLoginForm, setRedirectToLoginForm] = useState(false);
+    const [showPcStatusModal, setShowPcStatusModal] = useState(false);
 
     const openModal = (content, showButtons = false) => {
         setModalContent(content);
@@ -21,6 +23,14 @@ function NavbarAdmin() {
 
     const closeModal = () => {
         setShowModal(false);
+    };
+
+    const openPcStatusModal = () => {
+        setShowPcStatusModal(true);
+    };
+
+    const closePcStatusModal = () => {
+        setShowPcStatusModal(false);
     };
 
     return (
@@ -59,7 +69,9 @@ function NavbarAdmin() {
                                                 Visualizza caratteristiche di un singolo PC
                                             </button>
                                         } />
-                                        <button type="button" className="list-group-item list-group-item-action">Aggiorna lo stato di un PC</button>
+                                        <button type="button" className="list-group-item list-group-item-action" onClick={openPcStatusModal}>
+                                            Aggiorna lo stato di un PC
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -117,6 +129,9 @@ function NavbarAdmin() {
                     </Modal.Footer>
                 )}
             </Modal> */}
+
+        <ModifyComputerStatus show={showPcStatusModal} onHide={closePcStatusModal} />
+
         </>
     );
 }
