@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Modal } from 'react-bootstrap';
-import Select from 'react-select';
+import { Modal, Form, Button } from 'react-bootstrap';
 
 const ModifyComputerStatus = ({ show, onHide }) => {
     const [armadi, setArmadi] = useState([]);
     const [pcs, setPcs] = useState([]);
-    const [selectedArmadio, setSelectedArmadio] = useState(null);
-    const [selectedPc, setSelectedPc] = useState(null);
+    const [selectedArmadio, setSelectedArmadio] = useState("");
+    const [selectedPc, setSelectedPc] = useState("");
     const [newStatus, setNewStatus] = useState("");
+    const [formComplete, setFormComplete] = useState(false); //aggiunto uno stato per controllare se tutti i campi sono stati compilati
 
     useEffect(() => {
         const fetchArmadi = async () => {
@@ -17,11 +17,7 @@ const ModifyComputerStatus = ({ show, onHide }) => {
                     throw new Error("Errore nella richiesta HTTP: " + response.status);
                 }
                 const data = await response.json();
-                const armadiOptions = data.map(armadio => ({
-                    value: armadio.id,
-                    label: `${armadio.nome} - ${armadio.aula}`
-                }));
-                setArmadi(armadiOptions);
+                setArmadi(data);
             } catch (error) {
                 console.error("Errore durante il fetch degli armadi:", error);
             }
@@ -32,34 +28,36 @@ const ModifyComputerStatus = ({ show, onHide }) => {
         }
     }, [show]);
 
-    const handleArmadioChange = async (selectedOption) => {
+    useEffect(() => {
+        //vado a verificare se tutti i campi sono stati compilati
+        setFormComplete(selectedArmadio !== "" && selectedPc !== "" && newStatus !== "");
+    }, [selectedArmadio, selectedPc, newStatus]);
+
+    const handleArmadioChange = async (event) => {
+        const selectedOption = event.target.value;
         setSelectedArmadio(selectedOption);
         try {
-            const response = await fetch(`http://localhost:8090/api/computers?armadio=${selectedOption.value}`);
+            const response = await fetch(`http://localhost:8090/api/computers/armadionum/${selectedOption}`);
             if (!response.ok) {
                 throw new Error("Errore nella richiesta HTTP: " + response.status);
             }
             const data = await response.json();
-            const pcOptions = data.map(pc => ({
-                value: pc.id,
-                label: `${pc.nome} - ${pc.status}`
-            }));
-            setPcs(pcOptions);
-            setSelectedPc(null); // Reset selected PC when changing armadio
+            setPcs(data);
+            setSelectedPc("");
         } catch (error) {
             console.error("Errore durante il fetch dei PCs:", error);
         }
     };
 
-    const handlePcChange = (selectedOption) => {
-        setSelectedPc(selectedOption);
+    const handlePcChange = (event) => {
+        setSelectedPc(event.target.value);
     };
 
     const handleUpdateStatus = async (event) => {
         event.preventDefault();
         try {
-            if (!selectedArmadio || !selectedPc) {
-                console.error("Nessun armadio o PC selezionato");
+            if (!selectedArmadio || !selectedPc || !newStatus) {
+                console.error("Per favore, compila tutti i campi");
                 return;
             }
 
@@ -69,9 +67,9 @@ const ModifyComputerStatus = ({ show, onHide }) => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    id: selectedPc.value,
+                    id: selectedPc,
                     new_status: newStatus,
-                    armadio: selectedArmadio.value
+                    armadio: selectedArmadio
                 }),
             });
 
@@ -97,42 +95,55 @@ const ModifyComputerStatus = ({ show, onHide }) => {
                 <Modal.Title>Aggiorna Stato PC</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <form onSubmit={handleUpdateStatus}>
+                <Form onSubmit={handleUpdateStatus}>
                     <div className="mb-3">
-                        <label htmlFor="armadioSelect" className="form-label">Seleziona Armadio</label>
-                        <Select
+                        <Form.Label htmlFor="armadioSelect">Seleziona Armadio</Form.Label>
+                        <Form.Select
                             id="armadioSelect"
-                            options={armadi}
                             onChange={handleArmadioChange}
                             value={selectedArmadio}
-                        />
+                        >
+                            <option value="">Seleziona...</option>
+                            {armadi.map(armadio => (
+                                <option key={armadio.id} value={armadio.id}>
+                                    {`${armadio.nome} - ${armadio.aula}`}
+                                </option>
+                            ))}
+                        </Form.Select>
                     </div>
 
-                    {pcs.length > 0 && (
+                    {selectedArmadio && (
                         <div className="mb-3">
-                            <label htmlFor="pcSelect" className="form-label">Seleziona PC</label>
-                            <Select
+                            <Form.Label htmlFor="pcSelect">Seleziona PC</Form.Label>
+                            <Form.Select
                                 id="pcSelect"
-                                options={pcs}
                                 onChange={handlePcChange}
                                 value={selectedPc}
+                            >
+                                <option value="">Seleziona...</option>
+                                {pcs.map(pc => (
+                                    <option key={pc.id} value={pc.id}>
+                                        {`${pc.nome} - ${pc.status}`}
+                                    </option>
+                                ))}
+                            </Form.Select>
+                        </div>
+                    )}
+
+                    {selectedPc && (
+                        <div className="mb-3">
+                            <Form.Label htmlFor="newStatus">Nuovo Stato</Form.Label>
+                            <Form.Control
+                                type="text"
+                                id="newStatus"
+                                value={newStatus}
+                                onChange={e => setNewStatus(e.target.value)}
                             />
                         </div>
                     )}
 
-                    <div className="mb-3">
-                        <label htmlFor="newStatus" className="form-label">Nuovo Stato</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="newStatus"
-                            value={newStatus}
-                            onChange={e => setNewStatus(e.target.value)}
-                        />
-                    </div>
-
-                    <button type="submit" className="btn btn-primary">Aggiorna</button>
-                </form>
+                    <Button type="submit" variant="primary" disabled={!formComplete}>Aggiorna</Button>
+                </Form>
             </Modal.Body>
         </Modal>
     );
