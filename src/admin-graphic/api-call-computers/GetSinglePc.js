@@ -25,7 +25,7 @@ const GetSinglePc = ({ trigger }) => {
 
     const getPcs = async () => {
         try {
-            const response = await fetch("http://localhost:8090/api/computers");
+            const response = await fetch("http://2.238.117.64:2759/api/computers");
             if (!response.ok) {
                 throw new Error("Errore nella richiesta HTTP: " + response.status);
             }

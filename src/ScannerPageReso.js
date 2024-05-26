@@ -56,7 +56,7 @@ const ScannerPageReso = () => {
     const getArmadi = async () => {
         console.log("fetchato armadi")
         try {
-            const response = await fetch("http://localhost:8090/api/armadi/");
+            const response = await fetch("http://2.238.117.64:2759/api/armadi/");
             if (!response.ok) {
                 throw new Error("Errore nella richiesta HTTP: " + response.status);
             }
@@ -68,7 +68,7 @@ const ScannerPageReso = () => {
     };
   const getPcs = async () => {
       try {
-          const response = await fetch("http://localhost:8090/api/computers");
+          const response = await fetch("http://2.238.117.64:2759/api/computers");
           if (!response.ok) {
               throw new Error("Errore nella richiesta HTTP: " + response.status);
           }
@@ -108,7 +108,7 @@ const ScannerPageReso = () => {
             alert("seleziona l'armadio in cui riporre i pc")
             return
           }
-            const response = await fetch('http://localhost:8090/api/computers', {
+            const response = await fetch('http://2.238.117.64:2759/api/computers', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

@@ -11,7 +11,7 @@ const GetNumberPc = ({ trigger }) => {
     useEffect(() => {
         const getNumeroPc = async () => {
             try {
-                const response = await fetch("http://localhost:8090/api/computers/count");
+                const response = await fetch("http://2.238.117.64:2759/api/computers/count");
                 if (!response.ok) {
                     throw new Error("Errore nella richiesta HTTP: " + response.status);
                 }

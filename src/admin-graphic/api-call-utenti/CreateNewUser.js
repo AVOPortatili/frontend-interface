@@ -27,7 +27,7 @@ const ModifyComputerStatus = ({ trigger }) => {
     const fetchRuoli = async () => {
         console.log("fetchato ruoli")
         try {
-            const response = await fetch("http://localhost:8090/api/ruoli/");
+            const response = await fetch("http://2.238.117.64:2759/api/ruoli/");
             if (!response.ok) {
                 throw new Error("Errore nella richiesta HTTP: " + response.status);
             }
@@ -47,7 +47,7 @@ const ModifyComputerStatus = ({ trigger }) => {
                 return;
             }
 
-            const response = await fetch('http://localhost:8090/api/utenti', {
+            const response = await fetch('http://2.238.117.64:2759/api/utenti', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
