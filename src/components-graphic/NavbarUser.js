@@ -27,32 +27,10 @@ function NavbarUser({ doLogout }) {
     };
 
     // Funzione per gestire il logout confermato
-    /*const handleLogoutConfirmed = async () => {
+    const handleLogoutConfirmed = async () => {
         setShowModal(false); // Chiudi il modale di conferma
-
-        try {
-            const response = await fetch('/logout', {
-                method: 'POST',
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token'), // Invia il token JWT come header di autorizzazione
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                // Esegui altre operazioni di logout, ad esempio rimuovere il token dallo stato locale
-                setLogoutConfirmed(true);
-                // Reindirizza al LoginForm
-                setRedirectToLoginForm(true);
-            } else {
-                console.error(data.message); // Log dell'eventuale messaggio di errore dal server
-            }
-        } catch (error) {
-            console.error('Errore durante il logout:', error);
-        }
-    };*/
+        window.location.reload()
+    };
 
     return (
         <>
@@ -95,8 +73,8 @@ function NavbarUser({ doLogout }) {
                 {showLogoutButtons && (
                     <Modal.Footer className="d-flex justify-content-center">
                         <button className="btn btn-secondary mr-2" onClick={closeModal}>NO</button>
-                        <button className="btn btn-primary" onClick={closeModal}>SI</button>{/*messo fino a quando non funzionerà il logout*/}
-                        {/*<button className="btn btn-primary" onClick={handleLogoutConfirmed}>Sì</button>*/}
+                        {/* <button className="btn btn-primary" onClick={window.location.reload()}>SI</button>messo fino a quando non funzionerà il logout */}
+                        <button className="btn btn-primary" onClick={handleLogoutConfirmed}>Sì</button>
                     </Modal.Footer>
                 )}
             </Modal>

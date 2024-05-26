@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
-import { TextField } from "@react-ui-org/react-ui"
 
 const ModifyComputerStatus = ({ trigger }) => {
     const [armadi, setArmadi] = useState([]);
@@ -9,6 +8,7 @@ const ModifyComputerStatus = ({ trigger }) => {
     const [selectedArmadio, setSelectedArmadio] = useState("");
     const [selectedPc, setSelectedPc] = useState("");
     const [newStatus, setNewStatus] = useState("");
+    const [osservazioni, setOsservazioni] = useState("");
     const [formComplete, setFormComplete] = useState(false); //aggiunto uno stato per controllare se tutti i campi sono stati compilati
     const [isOpen, setIsOpen] = useState(false);
 
@@ -33,7 +33,7 @@ const ModifyComputerStatus = ({ trigger }) => {
         if (!statusList) {
             setStatusList()
         }
-        if (armadi.length===0 && isOpen) {
+        if (armadi.length===0) {
             fetchArmadi();
         }
         //vado a verificare se tutti i campi sono stati compilati
@@ -63,7 +63,7 @@ const ModifyComputerStatus = ({ trigger }) => {
     const handleUpdateStatus = async (event) => {
         event.preventDefault();
         try {
-            if (!selectedArmadio || !selectedPc || !newStatus) {
+            if (!formComplete) {
                 console.error("Per favore, compila tutti i campi");
                 return;
             }
@@ -106,10 +106,11 @@ const ModifyComputerStatus = ({ trigger }) => {
         }
     };
 
+    //forse sarebbe utile visualizzare anche le vecchie osservazioni
     return (
         <>
         {React.cloneElement(trigger, {onClick: openModal})}
-        <Modal show={isOpen} onHide={closeModal} dialogClassName="custom-modal" tabIndex="-1" autoFocus={false}>
+        <Modal show={isOpen} onHide={closeModal} dialogClassName="custom-modal">
             <Modal.Header closeButton>
                 <Modal.Title>Aggiorna Stato PC</Modal.Title>
             </Modal.Header>

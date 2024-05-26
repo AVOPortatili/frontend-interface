@@ -6,6 +6,8 @@ import GetNumberPc from './api-call-computers/GetNumberPc';
 import GetSinglePc from './api-call-computers/GetSinglePc';
 import GetNumberPcPerArmadi from './api-call-armadi/GetNumberPcPerArmadi';
 import GetAllArmadi from './api-call-armadi/GetAllArmadi';
+import CreateNewUser from './api-call-utenti/CreateNewUser';
+import DeleteUser from './api-call-utenti/DeleteUser';
 import ModifyComputerStatus from './api-call-computers/ModifyComputerStatus';
 import { Accordion, Button, ListGroup, Offcanvas } from 'react-bootstrap';
 
@@ -94,12 +96,16 @@ function NavbarAdmin() {
                                 <Accordion.Header>GESTISCI UTENTI</Accordion.Header>
                                 <Accordion.Body bsPrefix='collapse show'>
                                     <ListGroup>
+                                        <CreateNewUser trigger ={
                                                 <button type="button" className="list-group-item list-group-item-action">
-                                                    Invita nuovo utente
+                                                    Inserisci nuovo utente
                                                 </button>
+                                        } />
+                                        <DeleteUser trigger={
                                                 <button type="button" className="list-group-item list-group-item-action">
                                                     Elimina utente
                                                 </button>
+                                        } />
                                     </ListGroup>
                                 </Accordion.Body>
                             </Accordion.Item>
