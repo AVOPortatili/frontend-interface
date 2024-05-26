@@ -1,37 +1,44 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
+import { TextField } from "@react-ui-org/react-ui"
 
-const ModifyComputerStatus = ({ show, onHide }) => {
+const ModifyComputerStatus = ({ trigger }) => {
     const [armadi, setArmadi] = useState([]);
     const [pcs, setPcs] = useState([]);
+    const [statusList, setStatusList] = useState([])
     const [selectedArmadio, setSelectedArmadio] = useState("");
     const [selectedPc, setSelectedPc] = useState("");
     const [newStatus, setNewStatus] = useState("");
     const [formComplete, setFormComplete] = useState(false); //aggiunto uno stato per controllare se tutti i campi sono stati compilati
+    const [isOpen, setIsOpen] = useState(false);
+
+    const openModal = () => setIsOpen(true);
+    const closeModal = () => setIsOpen(false);
+
+    const fetchArmadi = async () => {
+        console.log("fetchato armadi")
+        try {
+            const response = await fetch("http://localhost:8090/api/armadi/");
+            if (!response.ok) {
+                throw new Error("Errore nella richiesta HTTP: " + response.status);
+            }
+            const data = await response.json();
+            setArmadi(data);
+        } catch (error) {
+            console.error("Errore durante il fetch degli armadi:", error);
+        }
+    };
 
     useEffect(() => {
-        const fetchArmadi = async () => {
-            try {
-                const response = await fetch("http://localhost:8090/api/armadi/all");
-                if (!response.ok) {
-                    throw new Error("Errore nella richiesta HTTP: " + response.status);
-                }
-                const data = await response.json();
-                setArmadi(data);
-            } catch (error) {
-                console.error("Errore durante il fetch degli armadi:", error);
-            }
-        };
-
-        if (show) {
+        if (!statusList) {
+            setStatusList()
+        }
+        if (armadi.length===0 && isOpen) {
             fetchArmadi();
         }
-    }, [show]);
-
-    useEffect(() => {
         //vado a verificare se tutti i campi sono stati compilati
         setFormComplete(selectedArmadio !== "" && selectedPc !== "" && newStatus !== "");
-    }, [selectedArmadio, selectedPc, newStatus]);
+    }, [selectedArmadio, selectedPc, newStatus, isOpen]);
 
     const handleArmadioChange = async (event) => {
         const selectedOption = event.target.value;
@@ -69,8 +76,8 @@ const ModifyComputerStatus = ({ show, onHide }) => {
                 body: JSON.stringify({
                     id: selectedPc,
                     new_status: newStatus,
-                    armadio: selectedArmadio
-                }),
+                    armadio: selectedArmadio,
+                })
             });
 
             if (!response.ok) {
@@ -80,17 +87,29 @@ const ModifyComputerStatus = ({ show, onHide }) => {
             const result = await response.json();
             if (result.message === 'success') {
                 alert("Status aggiornato con successo");
-                onHide();
             } else {
                 alert("Aggiornamento status fallito");
             }
         } catch (error) {
             console.error("Errore durante l'aggiornamento dello status:", error);
         }
+        try {
+            const response = await fetch(`http://localhost:8090/api/computers/armadionum/${selectedArmadio}`);
+            if (!response.ok) {
+                throw new Error("Errore nella richiesta HTTP: " + response.status);
+            }
+            const data = await response.json();
+            setPcs(data);
+            setSelectedPc("");
+        } catch (error) {
+            console.error("Errore durante il fetch dei PCs:", error);
+        }
     };
 
     return (
-        <Modal show={show} onHide={onHide} dialogClassName="custom-modal">
+        <>
+        {React.cloneElement(trigger, {onClick: openModal})}
+        <Modal show={isOpen} onHide={closeModal} dialogClassName="custom-modal" tabIndex="-1" autoFocus={false}>
             <Modal.Header closeButton>
                 <Modal.Title>Aggiorna Stato PC</Modal.Title>
             </Modal.Header>
@@ -131,21 +150,28 @@ const ModifyComputerStatus = ({ show, onHide }) => {
                     )}
 
                     {selectedPc && (
-                        <div className="mb-3">
-                            <Form.Label htmlFor="newStatus">Nuovo Stato</Form.Label>
-                            <Form.Control
-                                type="text"
-                                id="newStatus"
-                                value={newStatus}
-                                onChange={e => setNewStatus(e.target.value)}
-                            />
-                        </div>
+                            <div className="mb-3">
+                                <Form.Label htmlFor="statusSelect">Nuovo Stato</Form.Label>
+                                <Form.Select
+                                    id="statusSelect"
+                                    onChange={(e) => {setNewStatus(e.target.value)}}
+                                    value={newStatus}
+                                >
+                                    <option value="">Seleziona...</option>
+                                    <option key={0} value={"disponibile"}> Disponibile </option>
+                                    <option key={1} value={"non disponibile"}> Non disponibile </option>
+                                    <option key={2} value={"guasto"}> Guasto </option>
+                                </Form.Select>
+                                <br/>
+                                <Form.Control id='ossevazioni' type='text' placeholder='Scrivi qui eventuali osservazioni...' />
+                            </div>
                     )}
 
                     <Button type="submit" variant="primary" disabled={!formComplete}>Aggiorna</Button>
                 </Form>
             </Modal.Body>
         </Modal>
+        </>
     );
 };
 

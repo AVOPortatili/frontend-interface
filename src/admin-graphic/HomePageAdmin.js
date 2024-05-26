@@ -1,6 +1,7 @@
 import '../App.css';
 import React, { useState, useEffect } from 'react';
 import ScannerPageAdmin from './ScannerPageAdmin';
+import ModifyComputerStatus from './api-call-computers/ModifyComputerStatus';
 
 const HomePageAdmin = () => {
     const [showScanner, setShowScanner] = useState(false); //stato per controllare se mostrare o meno ScannerPage

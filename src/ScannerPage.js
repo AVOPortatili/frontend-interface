@@ -15,6 +15,7 @@ const ScannerPage = () => {
 
   const handleScan = (data) => {
     if (data && scanning) {
+      console.log(data)
       //implementazione della logica per incrementare il contatore solo se la scansione è attiva
       setCounter(prevCounter => prevCounter + 1);
       // Imposta qrScanned su true quando viene scansionato un QR code

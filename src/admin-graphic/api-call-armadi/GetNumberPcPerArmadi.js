@@ -14,7 +14,7 @@ function GetNumberPcPerArmadi({ trigger }) {
 
     const getNumeroPc = async () => {
         try {
-            const response = await fetch("http://localhost:8090/api/armadi/");
+            const response = await fetch("http://localhost:8090/api/armadi/count");
             if (!response.ok) {
                 throw new Error("Errore nella richiesta HTTP: " + response.status);
             }
