@@ -51,8 +51,8 @@ function NavbarUser({ doLogout }) {
                                 <a className="nav-link dropdown-toggle " data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false" style={{ color: '#fff', textDecoration: 'none' }}>MENU'</a>
                                 <ul className="dropdown-menu dropdown-menu-end">
                                     <li><a className="dropdown-item" onClick={() => openModal("Email: progettoportatili@gmail.com")}>Contattaci</a></li>
-                                    <li className="dropdown-divider"></li>
-                                    <li><a className="dropdown-item" onClick={() => openModal("Numero pc Ritirati/Orario:")}>Informazioni sul ritiro</a></li>
+                                    {/* <li className="dropdown-divider"></li>
+                                    <li><a className="dropdown-item" onClick={() => openModal("Numero pc Ritirati/Orario:")}>Informazioni sul ritiro</a></li> */}
                                     <li className="dropdown-divider"></li>
                                     <li><a className="dropdown-item" onClick={() => openModal("Sei sicuro di voler effettuare il logout?", true)}>LOGOUT</a></li>
                                 </ul>

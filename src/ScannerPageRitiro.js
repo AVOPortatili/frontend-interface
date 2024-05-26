@@ -4,23 +4,68 @@ import QrReader from 'react-qr-reader';
 import HomePage from './HomePage';
 
 
-const ScannerPage = () => {
+const ScannerPageRitiro = () => {
   const [counter, setCounter] = useState(0);
   const [scanning, setScanning] = useState(false); //inizia la scansione dopo il caricamento
   const [confirmed, setConfirmed] = useState(false); //stato per conferma ritiro
   const [qrLoaded, setQrLoaded] = useState(false); //stato per il caricamento del lettore QR
   const [qrScanned, setQrScanned] = useState(false); //stato per tracciare se è stato scansionato almeno un QR code
   const [goBack, setGoBack] = useState(false); // Stato per il ritorno alla HomePage
-
+  const [scannedPcs, setScannedPcs] = useState([]);
+  const [pcs, setPcs] = useState([]);
+  const [newStatus, setNewStatus] = useState("non disponibile")
 
   const handleScan = (data) => {
+    console.log(pcs)
+    let alreadyTaken = false
     if (data && scanning) {
       console.log(data)
+      if (!scannedPcs.includes(data)) {
+        for (let index = 0; index < pcs.length; index++) {
+          console.log(pcs[index].status)
+          if(pcs[index].id==data && pcs[index].status!=="disponibile") {
+            console.log("verificato")
+            alreadyTaken = true;
+            break;
+          }
+        }
+        if (alreadyTaken) {
+          alert("il computer scansionato non è disponibile")  
+        } else {
+          scannedPcs.push(data)
+          setCounter(prevCounter => prevCounter + 1);
+        }
+      }
       //implementazione della logica per incrementare il contatore solo se la scansione è attiva
-      setCounter(prevCounter => prevCounter + 1);
       // Imposta qrScanned su true quando viene scansionato un QR code
       setQrScanned(true);
     }
+  };
+
+  useEffect(() => {
+    if (pcs.length===0) {
+      getPcs();
+    }
+  })
+
+  const getPcs = async () => {
+      try {
+          const response = await fetch("http://localhost:8090/api/computers");
+          if (!response.ok) {
+              throw new Error("Errore nella richiesta HTTP: " + response.status);
+          }
+          const jsonData = await response.json();
+          for (let index = 0; index < jsonData.length; index++) {
+            console.log(jsonData[index].status!=="disponibile")
+          }
+          if (jsonData) {
+              setPcs(jsonData);
+          } else {
+              throw new Error("Dati non validi nella risposta JSON");
+          }
+      } catch (error) {
+          console.error("Errore durante la richiesta di numero PC:", error);
+      }
   };
 
   //logica per confermare il ritiro dei PC
@@ -29,12 +74,39 @@ const ScannerPage = () => {
       //se l'utente conferma, ferma la scansione e imposta lo stato di conferma su true
       stopScan();
       setConfirmed(true);
-      //esegui altre azioni necessarie
+      for (let index = 0; index < scannedPcs.length; index++) {
+        updatePcStatus(scannedPcs[index])
+      }
       alert('Ritiro confermato!');
     } else {
       //se l'utente annulla
     }
   };
+
+  const updatePcStatus = async (id) => {
+            const response = await fetch('http://localhost:8090/api/computers', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: id,
+                    new_status: newStatus,
+                    armadio: undefined,
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error("Errore nella richiesta HTTP: " + response.status);
+            }
+
+            const result = await response.json();
+            // if (result.message === 'success') {
+            //     alert("Status aggiornato con successo");
+            // } else {
+            //     alert("Aggiornamento status fallito");
+            // }
+  }
 
   const handleError = (err) => {
     console.error(err);
@@ -71,6 +143,7 @@ const ScannerPage = () => {
       <h2 style={{ textAlign: 'center' }}>Scanner QR Code</h2>
       <QrReader
         delay={3000}
+        scanDelay={500}
         onError={handleError}
         onScan={handleScan}
         onLoad={() => setQrLoaded(true)} //imposto qrLoaded a true quando il componente è stato caricato
@@ -81,8 +154,8 @@ const ScannerPage = () => {
       <div className="buttonContainer">
         <button
           onClick={handleConfirm}
-          className={qrScanned ? 'scannerPageButton' : 'submitButtonDisabled'}
-          disabled={!qrScanned}
+          className={scannedPcs.length!==0 ? 'scannerPageButton' : 'submitButtonDisabled'}
+          disabled={scannedPcs.length===0}
         >
           CONFERMA RITIRO
         </button>
@@ -93,4 +166,4 @@ const ScannerPage = () => {
   );
 };
 
-export default ScannerPage;
+export default ScannerPageRitiro;

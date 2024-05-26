@@ -10,6 +10,7 @@ import CreateNewUser from './api-call-utenti/CreateNewUser';
 import DeleteUser from './api-call-utenti/DeleteUser';
 import ModifyComputerStatus from './api-call-computers/ModifyComputerStatus';
 import { Accordion, Button, ListGroup, Offcanvas } from 'react-bootstrap';
+import LogoutModal from './LogoutModal';
 
 function NavbarAdmin() {
     const [showOffCanvas, setShowOffCanvas] = useState(false)

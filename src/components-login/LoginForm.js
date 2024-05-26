@@ -39,6 +39,7 @@ export default function LoginForm(props)  {
         console.log("user logged in successfully");
         props.setLogin(username, result.role, result.token)
       } else {
+        alert("Utente non trovato o credenziali sbagliate")
         console.log("user login failed");
         resetForm();
       }
