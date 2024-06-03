@@ -20,7 +20,7 @@ const ModifyComputerStatus = ({ trigger }) => {
             fetchRuoli() 
         }
         //vado a verificare se tutti i campi sono stati compilati
-        setFormComplete(nome !== "" && cognome !== "" && email !== "" && username !== "" && password !== "" && ruolo!== "");
+        setFormComplete(nome !== "" && cognome !== "" && email !== "" && ruolo!== "");
     }, [ruoli, nome, cognome, email, username, password]);
 
     
@@ -42,38 +42,42 @@ const ModifyComputerStatus = ({ trigger }) => {
     const submit = async (event) => {
         event.preventDefault();
         try {
-            if (!formComplete) { //controllo inutile, non so perche' sia qui
-                console.error("Per favore, compila tutti i campi");
-                return;
-            }
-
-            const response = await fetch('http://localhost:8090/api/utenti', {
+            const response = await fetch('http://localhost:8080/api/user/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    nome: nome,
-                    cognome: cognome,
-                    email: email,
-                    ruolo: ruolo,
-                    username: username,
-                    password: password
-                })
-            });
-
-            if (!response.ok) {
-                throw new Error("Errore nella richiesta HTTP: " + response.status);
-            }
-
-            const result = await response.json();
-            console.log(result.message)
-            alert("Utente creato con successo");
+                    nome: nome.trim(),
+                    cognome: cognome.trim(),
+                    email: email.trim(),
+                    ruolo: ruolo.trim(),
+                })}).then((response) => {
+                    console.log("IN")
+                    if (!response.ok) {
+                        throw new Error("Errore nella richiesta HTTP: " + response.status);
+                    }
+                    const result = response.json();
+                    console.log(result.message)
+                    alert("Utente creato con successo");
+                    reset();
+                });
         } catch (error) {
             alert("Creazione utente fallita")
             console.error("Errore durante l'aggiornamento dello status:", error);
         }
     };
+
+    const reset = () => {
+        const nome =  document.getElementById("nome");
+        const cognome =  document.getElementById("cognome");
+        const email =  document.getElementById("email");
+        const ruolo =  document.getElementById("ruolo");
+        nome.value = "";
+        cognome.value = "";
+        email.value = "";
+        ruolo.selectedIndex = 0;
+    }
 
     return (
         <>
@@ -103,11 +107,7 @@ const ModifyComputerStatus = ({ trigger }) => {
                                     {ruolo}
                                 </option>
                             ))}
-                        </Form.Select>
-                        <label htmlFor='username'>Nome utente: </label>
-                        <Form.Control id='username' type='text' placeholder='Nome Utente...' onChange={(e) => {setUsername(e.target.value)}} />
-                        <label htmlFor='password'>Password: </label>
-                        <Form.Control id='password' type='password' placeholder='Password...' onChange={(e) => {setPassword(e.target.value)}} />
+                         </Form.Select>
                     </div>
                     <Button type="submit" variant="primary" disabled={!formComplete}>Crea utente</Button>
                 </Form>
