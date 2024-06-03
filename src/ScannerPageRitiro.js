@@ -1,8 +1,7 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
-import QrReader from 'react-qr-reader';
 import HomePage from './HomePage';
-
+import {Scanner} from "@yudiel/react-qr-scanner";
 
 const ScannerPageRitiro = () => {
   const [counter, setCounter] = useState(0);
@@ -15,15 +14,15 @@ const ScannerPageRitiro = () => {
   const [pcs, setPcs] = useState([]);
   const [newStatus, setNewStatus] = useState("non disponibile")
 
-  const handleScan = (data) => {
-    console.log(pcs)
-    let alreadyTaken = false
-    if (data && scanning) {
+  const handleScan = (scannedData) => {
+      let data = scannedData[0].rawValue
+      let alreadyTaken = false
+      if(data){
       console.log(data)
       if (!scannedPcs.includes(data)) {
         for (let index = 0; index < pcs.length; index++) {
-          console.log(pcs[index].status)
-          if(pcs[index].id==data && pcs[index].status!=="disponibile") {
+            console.log(pcs[index].status)
+            if(pcs[index].id==data && pcs[index].status!=="disponibile") {
             console.log("verificato")
             alreadyTaken = true;
             break;
@@ -101,23 +100,9 @@ const ScannerPageRitiro = () => {
             }
 
             const result = await response.json();
-            // if (result.message === 'success') {
-            //     alert("Status aggiornato con successo");
-            // } else {
-            //     alert("Aggiornamento status fallito");
-            // }
   }
 
-  const handleError = (err) => {
-    console.error(err);
-  };
-
   useEffect(() => {
-    //attiva la scansione solo dopo che il componente è stato caricato completamente
-    if (qrLoaded) {
-      setScanning(true);
-    }
-
     //funzione per fermare la scansione quando il componente viene smontato
     return () => {
       stopScan();
@@ -141,15 +126,12 @@ const ScannerPageRitiro = () => {
   return (
     <div className="scanner-page">
       <h2 style={{ textAlign: 'center' }}>Scanner QR Code</h2>
-      <QrReader
-        delay={3000}
-        scanDelay={500}
-        onError={handleError}
-        onScan={handleScan}
-        onLoad={() => setQrLoaded(true)} //imposto qrLoaded a true quando il componente è stato caricato
-        style={{ width: '70vw', maxWidth: '400px', marginBottom: '20px' }}
+      <Scanner
+          onScan={handleScan}
+          scanDelay={500}
       />
-      {/*il bottone "Conferma ritiro" viene disabilitato finché non viene scansionato almeno un QR code */}
+
+        {/*il bottone "Conferma ritiro" viene disabilitato finché non viene scansionato almeno un QR code */}
       <p style={{ textAlign: 'center', marginTop: '20px' }}>Contatore PC ritirati: {counter}</p>
       <div className="buttonContainer">
         <button

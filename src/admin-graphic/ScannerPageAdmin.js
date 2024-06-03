@@ -1,7 +1,8 @@
 import '../App.css';
 import React, { useState, useEffect } from 'react';
-import QrReader from 'react-qr-reader';
+//import QrReader from 'react-qr-reader';
 import HomePageAdmin from './HomePageAdmin';
+import {Scanner} from "@yudiel/react-qr-scanner";
 
 
 const ScannerPage = () => {
@@ -14,7 +15,8 @@ const ScannerPage = () => {
 
 
   const handleScan = (data) => {
-    if (data && scanning) {
+//    if (data && scanning) {
+    if (data) {
       //implementazione della logica per incrementare il contatore solo se la scansione è attiva
       setCounter(prevCounter => prevCounter + 1);
       // Imposta qrScanned su true quando viene scansionato un QR code
@@ -68,6 +70,12 @@ const ScannerPage = () => {
   return (
     <div className="scanner-page">
       <h2 style={{ textAlign: 'center' }}>Scanner QR Code</h2>
+      <Scanner
+          onScan={handleScan}
+          scanDelay={500}
+      />
+
+      {/*
       <QrReader
         delay={3000}
         onError={handleError}
@@ -75,6 +83,7 @@ const ScannerPage = () => {
         onLoad={() => setQrLoaded(true)} //imposto qrLoaded a true quando il componente è stato caricato
         style={{ width: '70vw', maxWidth: '400px', marginBottom: '20px' }}
       />
+*/}
       {/*il bottone "Conferma ritiro" viene disabilitato finché non viene scansionato almeno un QR code */}
       <p style={{ textAlign: 'center', marginTop: '20px' }}>Contatore PC ritirati: {counter}</p>
       <div className="buttonContainer">

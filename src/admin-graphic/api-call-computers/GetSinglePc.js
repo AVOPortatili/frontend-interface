@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Modal } from 'react-bootstrap';
-import Select from 'react-select';
 import Form from 'react-bootstrap/Form';
 
 const GetSinglePc = ({ trigger }) => {

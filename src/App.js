@@ -1,6 +1,5 @@
 import './App.css';
 import React, { useState } from 'react';
-import UserStore from './stores/UserStore';
 import LoginForm from './components-login/LoginForm';
 import Navbar from './components-graphic/Navbar';
 import NavbarUser from './components-graphic/NavbarUser';

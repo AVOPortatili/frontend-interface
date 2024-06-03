@@ -1,8 +1,9 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
-import QrReader from 'react-qr-reader';
+//import QrReader from 'react-qr-reader';
 import HomePage from './HomePage';
 import { Form} from 'react-bootstrap';
+import {Scanner} from "@yudiel/react-qr-scanner";
 
 
 const ScannerPageReso = () => {
@@ -18,9 +19,12 @@ const ScannerPageReso = () => {
   const [pcs, setPcs] = useState([]);
   const [newStatus, setNewStatus] = useState("disponibile")
 
-  const handleScan = (data) => {
+  const handleScan = (scannedData) => {
+    console.log("handle scan")
+    console.log(scannedData);
     let alreadyTaken = false
-    if (data && scanning) {
+    let data = scannedData[0].rawValue
+    if (data) {
       console.log(data)
       if (!scannedPcs.includes(data)) {
         for (let index = 0; index < pcs.length; index++) {
@@ -32,7 +36,7 @@ const ScannerPageReso = () => {
           }
         }
         if (alreadyTaken) {
-          alert("il computer scansionato risulta essere già disponibile")  
+          alert("il computer scansionato risulta essere già disponibile")
         } else {
           scannedPcs.push(data)
           setCounter(prevCounter => prevCounter + 1);
@@ -165,6 +169,12 @@ const ScannerPageReso = () => {
   return (
     <div className="scanner-page">
       <h2 style={{ textAlign: 'center' }}>Scanner QR Code</h2>
+        <Scanner
+            onScan={handleScan}
+            scanDelay={500}
+        />
+
+        {/*
       <QrReader
         delay={3000}
         scanDelay={500}
@@ -173,6 +183,7 @@ const ScannerPageReso = () => {
         onLoad={() => setQrLoaded(true)} //imposto qrLoaded a true quando il componente è stato caricato
         style={{ width: '70vw', maxWidth: '400px', marginBottom: '20px' }}
       />
+*/}
       {/*il bottone "Conferma ritiro" viene disabilitato finché non viene scansionato almeno un QR code */}
       <p style={{ textAlign: 'center', marginTop: '20px' }}>PC scansionati: {counter}</p>
       <div className="buttonContainer">
