@@ -169,10 +169,12 @@ const ScannerPageReso = () => {
   return (
     <div className="scanner-page">
       <h2 style={{ textAlign: 'center' }}>Scanner QR Code</h2>
-        <Scanner
-            onScan={handleScan}
-            scanDelay={500}
-        />
+        <div style={{ width: '70vw', maxWidth: '400px', marginBottom: '300px' }}>
+          <Scanner
+              onScan={handleScan}
+              scanDelay={500}
+          />
+        </div>
 
         {/*
       <QrReader
