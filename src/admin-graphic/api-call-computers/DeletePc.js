@@ -26,7 +26,7 @@ const DeletePc = ({ trigger }) => {
 
     const getPcs = async () => {
         try {
-            const response = await fetch("http://192.168.1.204:8090/api/computers");
+            const response = await fetch("http://localhost:8090/api/computers");
             if (!response.ok) {
                 throw new Error("Errore nella richiesta HTTP: " + response.status);
             }
@@ -50,7 +50,7 @@ const DeletePc = ({ trigger }) => {
                 return;
             }
 
-            const response = await fetch('http://192.168.1.204:8090/api/computers', {
+            const response = await fetch('http://localhost:8090/api/computers', {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

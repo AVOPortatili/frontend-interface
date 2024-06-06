@@ -17,7 +17,7 @@ const GetSingleuser = ({ trigger }) => {
 
     const getUsers = async () => {
         try {
-            const response = await fetch("http://192.168.1.204:8090/api/utenti");
+            const response = await fetch("http://localhost:8090/api/utenti");
             if (!response.ok) {
                 throw new Error("Errore nella richiesta HTTP: " + response.status);
             }
@@ -41,7 +41,7 @@ const GetSingleuser = ({ trigger }) => {
                 return;
             }
 
-            const response = await fetch('http://192.168.1.204:8090/api/utenti', {
+            const response = await fetch('http://localhost:8090/api/utenti', {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

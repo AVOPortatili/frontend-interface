@@ -27,7 +27,7 @@ const ModifyPcStatus = ({ trigger }) => {
     const fetchRuoli = async () => {
         console.log("fetchato ruoli")
         try {
-            const response = await fetch("http://192.168.1.204:8090/api/ruoli/");
+            const response = await fetch("http://localhost:8090/api/ruoli/");
             if (!response.ok) {
                 throw new Error("Errore nella richiesta HTTP: " + response.status);
             }
@@ -42,7 +42,7 @@ const ModifyPcStatus = ({ trigger }) => {
     const submit = async (event) => {
         event.preventDefault();
         try {
-            const response = await fetch('http://192.168.1.204:8080/api/register', {
+            const response = await fetch('http://localhost:8080/api/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -32,7 +32,7 @@ export default function LoginForm(props)  {
     setButtonDisabled(true)
 
     try {
-      let res = await fetch('http://192.168.1.204:8080/api/login', {
+      let res = await fetch('http://localhost:8080/api/login', {
         method: 'post',
         headers: {
           'Accept': 'application/json',

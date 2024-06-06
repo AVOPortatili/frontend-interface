@@ -26,7 +26,7 @@ const AddNewPc = ({ trigger }) => {
     const fetchArmadi = async () => {
         console.log("fetchato armadi")
         try {
-            const response = await fetch("http://192.168.1.204:8090/api/armadi/");
+            const response = await fetch("http://localhost:8090/api/armadi/");
             if (!response.ok) {
                 throw new Error("Errore nella richiesta HTTP: " + response.status);
             }
@@ -64,7 +64,7 @@ const AddNewPc = ({ trigger }) => {
                 alert("Un PC disponibile deve per forza essere all'interno di un armadio")
                 return; //questi return points multipli fanno davvero schifo
             }
-            const response = await fetch('http://192.168.1.204:8090/api/computers', {
+            const response = await fetch('http://localhost:8090/api/computers', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

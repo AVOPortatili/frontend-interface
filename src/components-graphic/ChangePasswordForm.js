@@ -22,7 +22,7 @@ export const ChangePasswordForm = ({ trigger, props }) => {
         event.preventDefault();
         if (formComplete && newPassword==secondNewPassword) {
             try {
-                const response = await fetch('http://192.168.1.204:8080/api/update', {
+                const response = await fetch('http://localhost:8080/api/update', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

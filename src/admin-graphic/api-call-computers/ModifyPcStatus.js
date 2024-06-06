@@ -18,7 +18,7 @@ const ModifyPcStatus = ({ trigger }) => {
     const fetchArmadi = async () => {
         console.log("fetchato armadi")
         try {
-            const response = await fetch("http://192.168.1.204:8090/api/armadi/");
+            const response = await fetch("http://localhost:8090/api/armadi/");
             if (!response.ok) {
                 throw new Error("Errore nella richiesta HTTP: " + response.status);
             }
@@ -44,7 +44,7 @@ const ModifyPcStatus = ({ trigger }) => {
         const selectedOption = event.target.value;
         setSelectedArmadio(selectedOption);
         try {
-            const response = await fetch(`http://192.168.1.204:8090/api/computers/armadionum/${selectedOption}`);
+            const response = await fetch(`http://localhost:8090/api/computers/armadionum/${selectedOption}`);
             if (!response.ok) {
                 throw new Error("Errore nella richiesta HTTP: " + response.status);
             }
@@ -68,7 +68,7 @@ const ModifyPcStatus = ({ trigger }) => {
                 return;
             }
 
-            const response = await fetch('http://192.168.1.204:8090/api/computers', {
+            const response = await fetch('http://localhost:8090/api/computers', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -94,7 +94,7 @@ const ModifyPcStatus = ({ trigger }) => {
             console.error("Errore durante l'aggiornamento dello status:", error);
         }
         try {
-            const response = await fetch(`http://192.168.1.204:8090/api/computers/armadionum/${selectedArmadio}`);
+            const response = await fetch(`http://localhost:8090/api/computers/armadionum/${selectedArmadio}`);
             if (!response.ok) {
                 throw new Error("Errore nella richiesta HTTP: " + response.status);
             }

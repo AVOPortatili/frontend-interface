@@ -14,7 +14,7 @@ function GetAllArmadi({ trigger }) {
 
     const fetchArmadiData = async () => {
         try {
-            const response = await fetch("http://192.168.1.204:8090/api/armadi/");
+            const response = await fetch("http://localhost:8090/api/armadi/");
             if (!response.ok) {
                 throw new Error("Errore nella richiesta HTTP: " + response.status);
             }
