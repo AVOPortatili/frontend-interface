@@ -36,12 +36,12 @@ const GetNumberPc = ({ trigger }) => {
             {React.cloneElement(trigger, { onClick: openModal })}
             <Modal show={isOpen} onHide={closeModal} dialogClassName="custom-modal">
                 <Modal.Header closeButton>
-                    <Modal.Title>NUMERO DI PC DISPONIBILI A SCUOLA</Modal.Title>
+                    <Modal.Title>NUMERO DI PC TOTALI PRESENTI A SCUOLA</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div style={{ textAlign: 'center' }}>
                         {numeroPc !== null ? (
-                            <p>Numero PC disponibili: {numeroPc}</p>
+                            <p>Numero PC totali: {numeroPc}</p>
                         ) : (
                             <p>Caricamento...</p>
                         )}
