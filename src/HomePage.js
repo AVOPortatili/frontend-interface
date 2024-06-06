@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import ScannerPageRitiro from './ScannerPageRitiro';
 import ScannerPageReso from './ScannerPageReso';
 
-const HomePage = () => {
+const HomePage = (props) => {
     const [showScannerRitiro, setShowScannerRitiro] = useState(false); //stato per controllare se mostrare o meno ScannerPage
     const [showScannerReso, setShowScannerReso] = useState(false); //stato per controllare se mostrare o meno ScannerPage
     const [numeroPc, setNumeroPc] = useState(); //stato per memorizzare il numero di PC, PER ADAM: ricordati che in js non si usa null, ma undefined 
@@ -27,7 +27,8 @@ const HomePage = () => {
 
     const getNumeroPc = async () => {
         try {
-            const response = await fetch("http://localhost:8090/api/armadi/count");
+            console.log(props)
+            const response = await fetch("http://192.168.1.204:8090/api/armadi/count");
             if (!response.ok) {
                 throw new Error("Errore nella richiesta HTTP: " + response.status);
             }

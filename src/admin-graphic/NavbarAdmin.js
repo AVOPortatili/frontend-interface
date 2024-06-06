@@ -8,9 +8,11 @@ import GetNumberPcPerArmadi from './api-call-armadi/GetNumberPcPerArmadi';
 import GetAllArmadi from './api-call-armadi/GetAllArmadi';
 import CreateNewUser from './api-call-utenti/CreateNewUser';
 import DeleteUser from './api-call-utenti/DeleteUser';
-import ModifyComputerStatus from './api-call-computers/ModifyComputerStatus';
+import ModifyPcStatus from './api-call-computers/ModifyPcStatus';
+import AddNewPc from './api-call-computers/AddNewPc';
+import DeletePc from './api-call-computers/DeletePc';
 import { Accordion, Button, ListGroup, Offcanvas } from 'react-bootstrap';
-import LogoutModal from './LogoutModal';
+import LogoutModal from './LogoutModal'; //per futuro logout
 
 function NavbarAdmin() {
     const [showOffCanvas, setShowOffCanvas] = useState(false)
@@ -68,9 +70,19 @@ function NavbarAdmin() {
                                                 Visualizza caratteristiche di un singolo PC
                                             </button>
                                         } />
-                                        <ModifyComputerStatus trigger ={
+                                        <ModifyPcStatus trigger ={
                                             <button type="button" className="list-group-item list-group-item-action">
                                                 Aggiorna lo stato di un PC
+                                            </button>
+                                        } />
+                                        <AddNewPc trigger ={
+                                            <button type="button" className="list-group-item list-group-item-action">
+                                                Aggiungi un nuovo PC
+                                            </button>
+                                        } />
+                                        <DeletePc trigger ={
+                                            <button type="button" className="list-group-item list-group-item-action">
+                                                Rimuovi PC
                                             </button>
                                         } />
                                     </ListGroup>

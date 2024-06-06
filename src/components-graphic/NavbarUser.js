@@ -6,8 +6,9 @@ import Modal from 'react-bootstrap/Modal';
 import LoginForm from '../components-login/LoginForm';
 import { BsFillTelephoneFill } from "react-icons/bs";
 import { MdEmail } from "react-icons/md";
+import { ChangePasswordForm } from './ChangePasswordForm';
 
-function NavbarUser({ doLogout }) {
+function NavbarUser({ doLogout, userStore }) {
     const [showModal, setShowModal] = useState(false);
     const [modalContent, setModalContent] = useState("");
     const [showLogoutButtons, setShowLogoutButtons] = useState(false); //stato per tenere traccia della visualizzazione dei bottoni di logout
@@ -19,6 +20,7 @@ function NavbarUser({ doLogout }) {
         setModalContent(content);
         setShowLogoutButtons(showButtons); //mostra i bottoni di logout solo se necessario
         setShowModal(true);
+        console.log(userStore)
     };
 
     // Funzione per chiudere il modale
@@ -54,7 +56,11 @@ function NavbarUser({ doLogout }) {
                                     {/* <li className="dropdown-divider"></li>
                                     <li><a className="dropdown-item" onClick={() => openModal("Numero pc Ritirati/Orario:")}>Informazioni sul ritiro</a></li> */}
                                     <li className="dropdown-divider"></li>
-                                    <li><a className="dropdown-item" onClick={() => openModal("Sei sicuro di voler effettuare il logout?", true)}>LOGOUT</a></li>
+                                    <li><a className="dropdown-item" onClick={() => openModal("Sei sicuro di voler effettuare il logout?", true)}>Log-Out</a></li>
+                                    <li className="dropdown-divider"></li>
+                                    <ChangePasswordForm props={userStore} trigger={
+                                        <li><a className="dropdown-item">Cambia password</a></li>
+                                    } />
                                 </ul>
                             </li>
                         </ul>

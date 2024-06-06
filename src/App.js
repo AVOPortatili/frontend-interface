@@ -55,7 +55,7 @@ export default function App() { //facciata principale
     <>{/*questo è un fragment React che permette di contenere più componenti al suo interno*/}
       {/*{userStore.isLoggedIn ? <NavBarUser doLogout={doLogout} /> : <Navbar />}*/}
       <></>
-      {userStore.isLoggedIn ? (userStore.role==='utente' ? <NavbarUser /> : <NavbarAdmin />): <Navbar />}
+      {userStore.isLoggedIn ? (userStore.role==='utente' ? <NavbarUser userStore={userStore} /> : <NavbarAdmin />): <Navbar />}
       {/*{userStore.isLoggedIn ? (userStore.role==='user' ? <NavbarUser /> : <NavbarAdmin />): <Navbar />}*/}
 
       {/*{userStore.isLoggedIn ? <NavbarAdmin /> : <Navbar />}*/}

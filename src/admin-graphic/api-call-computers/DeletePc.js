@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Modal } from 'react-bootstrap';
-import Form from 'react-bootstrap/Form';
+import { Modal, Form, Button } from 'react-bootstrap';
 
-const GetSinglePc = ({ trigger }) => {
+const DeletePc = ({ trigger }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [pcs, setPcs] = useState();
     const [pcsData, setPcsData] = useState();
@@ -17,8 +16,11 @@ const GetSinglePc = ({ trigger }) => {
     }
 
     useEffect(() => {
-        if (!pcs && isOpen) {
+        if (isOpen===true) {
             getPcs();
+        }
+        if (isOpen===false) {
+            setSelectedPc(0)
         }
     }, [isOpen, pcs]);
 
@@ -40,12 +42,46 @@ const GetSinglePc = ({ trigger }) => {
         }
     };
     
+    const submit = async (event) => {
+        event.preventDefault();
+        try {
+            if (selectedPc==="") {
+                console.error("Per favore, compila tutti i campi");
+                return;
+            }
+
+            const response = await fetch('http://192.168.1.204:8090/api/computers', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: selectedPc.id,
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error("Errore nella richiesta HTTP: " + response.status);
+            }
+
+            const result = await response.json();
+            if (result.message === 'success') {
+                alert("PC rimosso con successo");
+            } else {
+                alert("Rimozione del PC fallita");
+            }
+        } catch (error) {
+            console.error("Errore durante la rimozione del PC:", error);
+        }
+        setSelectedPc()
+        getPcs()
+    };
     return (
         <>
             {React.cloneElement(trigger, { onClick: openModal })}
             <Modal show={isOpen} onHide={closeModal} dialogClassName="custom-modal">
                 <Modal.Header closeButton>
-                    <Modal.Title>CARATTERISTICHE DI UN SINGOLO PC</Modal.Title>
+                    <Modal.Title>RIMUOVI UN PC</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div style={{ textAlign: 'center' }}>
@@ -77,11 +113,11 @@ const GetSinglePc = ({ trigger }) => {
                         )
                         }
                     </div>
-
+                    <Button variant="primary" disabled={!selectedPc} onClick={submit}>Rimuovi</Button>
                 </Modal.Body>
             </Modal>
         </>
     );
 };
 
-export default GetSinglePc;
+export default DeletePc;

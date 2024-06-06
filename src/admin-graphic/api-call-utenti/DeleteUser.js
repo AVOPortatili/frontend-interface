@@ -4,20 +4,20 @@ import { Modal, Form, Button } from 'react-bootstrap';
 const GetSingleuser = ({ trigger }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [users, setUsers] = useState([]);
-    const [selectedUser, setSelectedUser] = useState();
+    const [selectedUser, setSelectedUser] = useState("");
 
-    const openModal = () => setIsOpen(true);
-    const closeModal = () => setIsOpen(false);
+    const openModal = () => { setIsOpen(true); getUsers()};
+    const closeModal = () =>  { setIsOpen(false); setSelectedUser("") };
 
     useEffect(() => {
-        if (users.length===0) {
+        if (users.length===0 ) {
             getUsers();
         }
     }, [isOpen, users.length]);
 
     const getUsers = async () => {
         try {
-            const response = await fetch("http://localhost:8090/api/utenti");
+            const response = await fetch("http://192.168.1.204:8090/api/utenti");
             if (!response.ok) {
                 throw new Error("Errore nella richiesta HTTP: " + response.status);
             }
@@ -41,7 +41,7 @@ const GetSingleuser = ({ trigger }) => {
                 return;
             }
 
-            const response = await fetch('http://localhost:8090/api/utenti', {
+            const response = await fetch('http://192.168.1.204:8090/api/utenti', {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ const GetSingleuser = ({ trigger }) => {
                 alert("Eliminazione dell'utente fallita");
             }
         } catch (error) {
-            console.error("Errore durante l'aggiornamento dello status:", error);
+            console.error("Errore durante l'eliminazione dell'utente:", error);
         }
         getUsers()
     };
@@ -91,7 +91,7 @@ const GetSingleuser = ({ trigger }) => {
                                 ))}
                             </Form.Select>
                         </div>
-                        <Button type="submit" variant="primary" disabled={selectedUser===""}>Aggiorna</Button>
+                        <Button type="submit" variant="primary" disabled={selectedUser===""}>Elimina</Button>
                     </Form>
                 </Modal.Body>
             </Modal>

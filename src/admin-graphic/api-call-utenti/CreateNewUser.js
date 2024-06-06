@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
 
-const ModifyComputerStatus = ({ trigger }) => {
+const ModifyPcStatus = ({ trigger }) => {
     const [nome, setNome] = useState("")
     const [cognome, setCognome] = useState("")
     const [email, setEmail] = useState("")
@@ -13,7 +13,7 @@ const ModifyComputerStatus = ({ trigger }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const openModal = () => setIsOpen(true);
-    const closeModal = () => setIsOpen(false);
+    const closeModal = () => { setIsOpen(false); setFormComplete(false) };
 
     useEffect(() => {
         if (ruoli.length===0) {
@@ -21,13 +21,13 @@ const ModifyComputerStatus = ({ trigger }) => {
         }
         //vado a verificare se tutti i campi sono stati compilati
         setFormComplete(nome !== "" && cognome !== "" && email !== "" && ruolo!== "");
-    }, [ruoli, nome, cognome, email, username, password]);
+    }, [ruoli, ruolo, nome, cognome, email, password]);
 
     
     const fetchRuoli = async () => {
         console.log("fetchato ruoli")
         try {
-            const response = await fetch("http://localhost:8090/api/ruoli/");
+            const response = await fetch("http://192.168.1.204:8090/api/ruoli/");
             if (!response.ok) {
                 throw new Error("Errore nella richiesta HTTP: " + response.status);
             }
@@ -42,7 +42,7 @@ const ModifyComputerStatus = ({ trigger }) => {
     const submit = async (event) => {
         event.preventDefault();
         try {
-            const response = await fetch('http://localhost:8080/api/user/register', {
+            const response = await fetch('http://192.168.1.204:8080/api/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -77,6 +77,10 @@ const ModifyComputerStatus = ({ trigger }) => {
         cognome.value = "";
         email.value = "";
         ruolo.selectedIndex = 0;
+        setNome("")
+        setCognome("")
+        setEmail("")
+        setRuolo("")
     }
 
     return (
@@ -117,4 +121,4 @@ const ModifyComputerStatus = ({ trigger }) => {
     );
 };
 
-export default ModifyComputerStatus;
+export default ModifyPcStatus;
