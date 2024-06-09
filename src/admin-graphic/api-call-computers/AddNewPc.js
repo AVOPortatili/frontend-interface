@@ -20,7 +20,7 @@ const AddNewPc = ({ trigger }) => {
     const [formComplete, setFormComplete] = useState(false); //aggiunto uno stato per controllare se tutti i campi sono stati compilati
     const [isOpen, setIsOpen] = useState(false);
 
-    const openModal = () => setIsOpen(true);
+    const openModal = () =>  {setIsOpen(true); fetchArmadi();}
     const closeModal = () => setIsOpen(false);
 
     const fetchArmadi = async () => {
@@ -41,9 +41,6 @@ const AddNewPc = ({ trigger }) => {
         if (!statusList) {
             setStatusList()
         }
-        if (armadi.length===0) {
-            fetchArmadi();
-        }
         //vado a verificare se tutti i campi sono stati compilati
         setFormComplete(nome !== "" && numInv !== "" && mac !== "" && note !== "" && dataUltimoAggiornamento && status !== "");
     }, [selectedArmadio, nome, numInv, mac, note, dataUltimoAggiornamento, status, isOpen]);
@@ -52,6 +49,16 @@ const AddNewPc = ({ trigger }) => {
         const selectedOption = event.target.value;
         setSelectedArmadio(selectedOption);
     };
+
+    const reset = () => {
+        setSelectedArmadio("")
+        setNome("")
+        setNumInv("")
+        setMac("")
+        setNote("")
+        setDataUltimoAggiornamento("")
+        setStatus("")
+    }
 
     const submit = async (event) => {
         event.preventDefault();
@@ -95,6 +102,7 @@ const AddNewPc = ({ trigger }) => {
             alert("Aggiunta PC fallita (errori nella comunicazione con il server)");
             console.error("Errore durante l'aggiunta del nuovo PC:", error);
         }
+        reset()
     };
 
     //forse sarebbe utile visualizzare anche le vecchie osservazioni
@@ -103,7 +111,7 @@ const AddNewPc = ({ trigger }) => {
         {React.cloneElement(trigger, {onClick: openModal})}
         <Modal show={isOpen} onHide={closeModal} dialogClassName="custom-modal">
             <Modal.Header closeButton>
-                <Modal.Title>Aggiorna Stato PC</Modal.Title>
+            <Modal.Title>AGGIUNGI NUOVO PC</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={submit}>
@@ -135,14 +143,14 @@ const AddNewPc = ({ trigger }) => {
                         <label htmlFor='nome'>Nome: </label>
                         <Form.Control id='nome' type='text' placeholder='Nome...' onChange={(e) => {setNome(e.target.value)}} />
                         <label htmlFor='numInv'>Numero inventario: </label>
-                        <Form.Control id='numInv' type='text' placeholder='Numero inventario...' onChange={(e) => {setNumInv(e.target.value)}} onKeyDown={(event) => {
+                        <Form.Control id='numInv' type='text' value={numInv} placeholder='Numero inventario...' onChange={(e) => {setNumInv(e.target.value)}} onKeyDown={(event) => {
                         if (!/[0-9]/.test(event.key)) {
                             event.preventDefault();
                         }}} />
                         <label htmlFor='mac'>Mac address: </label>
-                        <Form.Control id='mac' type='text' placeholder='Mac address...' onChange={(e) => {setMac(e.target.value)}} />
+                        <Form.Control id='mac' type='text' value={mac} placeholder='Mac address...' onChange={(e) => {setMac(e.target.value)}} />
                         <label htmlFor='note'>Specifiche: </label>
-                        <Form.Control id='note' type='text' placeholder='Specifiche...' onChange={(e) => {setNote(e.target.value)}} />
+                        <Form.Control id='note' type='text' value={note} placeholder='Specifiche...' onChange={(e) => {setNote(e.target.value)}} />
                         <label htmlFor='data'>Data ultimo aggiornamento: </label>
                         <br />
                         <DatePicker
@@ -152,7 +160,7 @@ const AddNewPc = ({ trigger }) => {
                         /> 
                         <br />
                         <label htmlFor='osservazioni'>Osservazioni: </label>
-                        <Form.Control id='ossevazioni' type='text' placeholder='Scrivi qui eventuali osservazioni...' onChange={(e) => {setOsservazioni(e.target.value)}} />
+                        <Form.Control id='ossevazioni' type='text' placeholder='Scrivi qui eventuali osservazioni...' value={osservazioni} onChange={(e) => {setOsservazioni(e.target.value)}} />
                     </div>
                     <Button type="submit" variant="primary" disabled={!formComplete}>Aggiungi Computer</Button>
                 </Form>

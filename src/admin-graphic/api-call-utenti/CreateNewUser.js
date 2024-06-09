@@ -12,13 +12,10 @@ const ModifyPcStatus = ({ trigger }) => {
     const [formComplete, setFormComplete] = useState(false); //aggiunto uno stato per controllare se tutti i campi sono stati compilati
     const [isOpen, setIsOpen] = useState(false);
 
-    const openModal = () => setIsOpen(true);
-    const closeModal = () => { setIsOpen(false); setFormComplete(false) };
+    const openModal = () =>  { setIsOpen(true); fetchRuoli()};
+    const closeModal = () => { setIsOpen(false)};
 
     useEffect(() => {
-        if (ruoli.length===0) {
-            fetchRuoli() 
-        }
         //vado a verificare se tutti i campi sono stati compilati
         setFormComplete(nome !== "" && cognome !== "" && email !== "" && ruolo!== "");
     }, [ruoli, ruolo, nome, cognome, email, password]);
@@ -69,14 +66,6 @@ const ModifyPcStatus = ({ trigger }) => {
     };
 
     const reset = () => {
-        const nome =  document.getElementById("nome");
-        const cognome =  document.getElementById("cognome");
-        const email =  document.getElementById("email");
-        const ruolo =  document.getElementById("ruolo");
-        nome.value = "";
-        cognome.value = "";
-        email.value = "";
-        ruolo.selectedIndex = 0;
         setNome("")
         setCognome("")
         setEmail("")
@@ -88,17 +77,17 @@ const ModifyPcStatus = ({ trigger }) => {
         {React.cloneElement(trigger, {onClick: openModal})}
         <Modal show={isOpen} onHide={closeModal} dialogClassName="custom-modal" >
             <Modal.Header closeButton>
-                <Modal.Title>Aggiungi nuovo utente</Modal.Title>
+            <Modal.Title>AGGIUNGI UN NUOVO UTENTE</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={submit}>
                     <div className="mb-3">
                         <label htmlFor='nome'>Nome: </label>
-                        <Form.Control id='nome' type='text' placeholder='Nome...' onChange={(e) => {setNome(e.target.value)}} />
+                        <Form.Control id='nome' type='text' placeholder='Nome...' value={nome} onChange={(e) => {setNome(e.target.value)}} />
                         <label htmlFor='cognome'>Cognome: </label>
-                        <Form.Control id='cognome' type='text' placeholder='Cognome...' onChange={(e) => {setCognome(e.target.value)}} />
+                        <Form.Control id='cognome' type='text' placeholder='Cognome...' value={cognome} onChange={(e) => {setCognome(e.target.value)}} />
                         <label htmlFor='email'>Email: </label>
-                        <Form.Control id='email' type='email' placeholder='Email...' onChange={(e) => {setEmail(e.target.value)}} />
+                        <Form.Control id='email' type='email' placeholder='Email...' value={email} onChange={(e) => {setEmail(e.target.value)}} />
                         <Form.Label htmlFor="ruolo">Seleziona Ruolo:</Form.Label>
                         <Form.Select
                             id="ruolo"

@@ -23,7 +23,7 @@ const HomePage = (props) => {
         if (numeroPc === undefined) {//TODO: usare un flag booleano per dire se i dati debbano essere fetchati o meno
             getNumeroPc();
         }
-    }, []);
+    });
 
     const getNumeroPc = async () => {
         try {
@@ -41,7 +41,7 @@ const HomePage = (props) => {
                     temp[index] = { cassetto: jsonData[index].nome, aula: jsonData[index].aula, numero: jsonData[index].count };
                 }
                 console.log(temp)
-                setNumeroPc(temp.map((element) => { return (<p>PC disponibili nel cassetto {element.cassetto} nell'aula {element.aula}: {element.numero}</p>) }))
+                setNumeroPc(temp.map((element) => { return (<p>PC disponibili nell' armadio {element.cassetto} nell'aula {element.aula}: {element.numero}</p>) }))
             } else {
                 throw new Error("Dati non validi nella risposta JSON");
             }
@@ -69,7 +69,7 @@ const HomePage = (props) => {
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '170px' }}>
                 <button className="btn btn-primary btn-lg mb-3 submitButton" style={{ fontSize: '2.0rem', padding: '25px 50px' }} onClick={handleRitiro}>RITIRA PC</button>
                 <div style={{ marginBottom: '80px' }}></div>
-                <button className="btn btn-primary btn-lg submitButton" style={{ fontSize: '2.0rem', padding: '25px 50px' }} onClick={handleReso}>RESO PC</button>
+                <button className="btn btn-primary btn-lg submitButton" style={{ fontSize: '2.0rem', padding: '25px 50px' }} onClick={handleReso}>RESTITUISCI PC</button>
             </div>
         </div>
     );

@@ -12,8 +12,16 @@ const ModifyPcStatus = ({ trigger }) => {
     const [formComplete, setFormComplete] = useState(false); //aggiunto uno stato per controllare se tutti i campi sono stati compilati
     const [isOpen, setIsOpen] = useState(false);
 
-    const openModal = () => setIsOpen(true);
+    const openModal = () =>  {setIsOpen(true); fetchArmadi(); fetchPcs()};
     const closeModal = () => setIsOpen(false);
+
+    const reset = () => {
+        setSelectedArmadio("")
+        setSelectedPc("")
+        setNewStatus("")
+        setOsservazioni("")
+        fetchPcs()
+    }
 
     const fetchArmadi = async () => {
         console.log("fetchato armadi")
@@ -28,6 +36,20 @@ const ModifyPcStatus = ({ trigger }) => {
             console.error("Errore durante il fetch degli armadi:", error);
         }
     };
+    
+    const fetchPcs = async () => {
+        console.log("fetchato armadi")
+        try {
+            const response = await fetch("http://localhost:8090/api/computers/");
+            if (!response.ok) {
+                throw new Error("Errore nella richiesta HTTP: " + response.status);
+            }
+            const data = await response.json();
+            setPcs(data);
+        } catch (error) {
+            console.error("Errore durante il fetch degli armadi:", error);
+        }
+    };
 
     useEffect(() => {
         if (!statusList) {
@@ -36,6 +58,9 @@ const ModifyPcStatus = ({ trigger }) => {
         if (armadi.length===0) {
             fetchArmadi();
         }
+        if (pcs.length===0) {
+            fetchPcs();
+        }
         //vado a verificare se tutti i campi sono stati compilati
         setFormComplete(selectedArmadio !== "" && selectedPc !== "" && newStatus !== "");
     }, [selectedArmadio, selectedPc, newStatus, isOpen]);
@@ -43,17 +68,6 @@ const ModifyPcStatus = ({ trigger }) => {
     const handleArmadioChange = async (event) => {
         const selectedOption = event.target.value;
         setSelectedArmadio(selectedOption);
-        try {
-            const response = await fetch(`http://localhost:8090/api/computers/armadionum/${selectedOption}`);
-            if (!response.ok) {
-                throw new Error("Errore nella richiesta HTTP: " + response.status);
-            }
-            const data = await response.json();
-            setPcs(data);
-            setSelectedPc("");
-        } catch (error) {
-            console.error("Errore durante il fetch dei PCs:", error);
-        }
     };
 
     const handlePcChange = (event) => {
@@ -66,6 +80,9 @@ const ModifyPcStatus = ({ trigger }) => {
             if (!formComplete) {
                 console.error("Per favore, compila tutti i campi");
                 return;
+            }
+            if(newStatus==="disponibile" && selectedArmadio==="") {
+                alert("Un pc dev'essere in un armadio per essere disponibile")
             }
 
             const response = await fetch('http://localhost:8090/api/computers', {
@@ -90,19 +107,9 @@ const ModifyPcStatus = ({ trigger }) => {
             } else {
                 alert("Aggiornamento status fallito");
             }
+            reset()
         } catch (error) {
             console.error("Errore durante l'aggiornamento dello status:", error);
-        }
-        try {
-            const response = await fetch(`http://localhost:8090/api/computers/armadionum/${selectedArmadio}`);
-            if (!response.ok) {
-                throw new Error("Errore nella richiesta HTTP: " + response.status);
-            }
-            const data = await response.json();
-            setPcs(data);
-            setSelectedPc("");
-        } catch (error) {
-            console.error("Errore durante il fetch dei PCs:", error);
         }
     };
 
@@ -112,7 +119,7 @@ const ModifyPcStatus = ({ trigger }) => {
         {React.cloneElement(trigger, {onClick: openModal})}
         <Modal show={isOpen} onHide={closeModal} dialogClassName="custom-modal">
             <Modal.Header closeButton>
-                <Modal.Title>Aggiorna Stato PC</Modal.Title>
+            <Modal.Title>MODIFICA LO STATO DI UN PC</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={handleUpdateStatus}>
@@ -132,7 +139,6 @@ const ModifyPcStatus = ({ trigger }) => {
                         </Form.Select>
                     </div>
 
-                    {selectedArmadio && (
                         <div className="mb-3">
                             <Form.Label htmlFor="pcSelect">Seleziona PC</Form.Label>
                             <Form.Select
@@ -148,7 +154,6 @@ const ModifyPcStatus = ({ trigger }) => {
                                 ))}
                             </Form.Select>
                         </div>
-                    )}
 
                     {selectedPc && (
                             <div className="mb-3">
@@ -164,7 +169,7 @@ const ModifyPcStatus = ({ trigger }) => {
                                     <option key={2} value={"guasto"}> Guasto </option>
                                 </Form.Select>
                                 <br/>
-                                <Form.Control id='ossevazioni' type='text' placeholder='Scrivi qui eventuali osservazioni...' onChange={(e) => {setOsservazioni(e.target.value)}} />
+                                <Form.Control id='ossevazioni' type='text' placeholder='Scrivi qui eventuali osservazioni...' onChange={(e) => {setOsservazioni(e.target.value)}} value={osservazioni} />
                             </div>
                     )}
 

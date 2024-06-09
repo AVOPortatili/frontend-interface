@@ -12,12 +12,12 @@ import ModifyPcStatus from './api-call-computers/ModifyPcStatus';
 import AddNewPc from './api-call-computers/AddNewPc';
 import DeletePc from './api-call-computers/DeletePc';
 import { Accordion, Button, ListGroup, Offcanvas } from 'react-bootstrap';
+import AddNewArmadio from './api-call-armadi/AddNewArmadio';
+import ModifyArmadio from './api-call-armadi/ModifyArmadio';
 import LogoutModal from './LogoutModal'; //per futuro logout
 
 function NavbarAdmin() {
     const [showOffCanvas, setShowOffCanvas] = useState(false)
-    const [redirectToLoginForm, setRedirectToLoginForm] = useState(false);
-
     const handleClose = () => setShowOffCanvas(false);
     const handleShow = () => setShowOffCanvas(true);
 
@@ -43,7 +43,6 @@ function NavbarAdmin() {
     //ORA FUNZIONA ANCHE REACT-SELECT, oltre al testo
     return (
         <>
-            {redirectToLoginForm ? <LoginForm /> : null}
             <nav className="navbar navbar-dark bg-dark">
                 {/* <a className="btn btn-dark"  role="button"  autoFocus={false} > */}
                     <Button style={{backgroundColor:"#212529", borderColor:"#212529"}} onClick={handleShow}>
@@ -93,15 +92,25 @@ function NavbarAdmin() {
                                 <Accordion.Body bsPrefix='collapse show'>
                                     <ListGroup>
                                         <GetAllArmadi trigger={
-                                                <button type="button" className="list-group-item list-group-item-action">
-                                                    Visualizza tutti gli armadi
-                                                </button>
-                                            } />
-                                            <GetNumberPcPerArmadi trigger={
-                                                <button type="button" className="list-group-item list-group-item-action">
-                                                    Visualizza numero di pc presenti in ciascun armadio
-                                                </button>
-                                            } />
+                                            <button type="button" className="list-group-item list-group-item-action">
+                                                Visualizza tutti gli armadi
+                                            </button>
+                                        } />
+                                        <GetNumberPcPerArmadi trigger={
+                                            <button type="button" className="list-group-item list-group-item-action">
+                                                Visualizza numero di pc presenti in ciascun armadio
+                                            </button>
+                                        } />
+                                        <AddNewArmadio trigger={
+                                            <button type="button" className="list-group-item list-group-item-action">
+                                                Aggiungi un nuovo armadio
+                                            </button>
+                                        } />
+                                        <ModifyArmadio trigger={
+                                            <button type="button" className="list-group-item list-group-item-action">
+                                                Modifica un armadio
+                                            </button>
+                                        } />
                                     </ListGroup>
                                 </Accordion.Body>
                             </Accordion.Item>
@@ -125,24 +134,7 @@ function NavbarAdmin() {
                         </Accordion>
                     </Offcanvas.Body>
                 </Offcanvas>
-                    {/* <button className="btn btn-danger btn-block my-1 d-block" onClick={() => openModal("Sei sicuro di voler effettuare il logout?", true)}>LOGOUT</button> */}
             </nav>
-{/* 
-            <Modal show={showModal} onHide={closeModal} dialogClassName="custom-modal">
-                <Modal.Header closeButton>
-                    <Modal.Title>{showLogoutButtons ? "CONFERMA LOGOUT" : ""}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    {modalContent}
-                </Modal.Body>
-                {showLogoutButtons && (
-                    <Modal.Footer className="d-flex justify-content-center">
-                        <button className="btn btn-secondary mr-2" onClick={closeModal}>NO</button>
-                        <button className="btn btn-primary" onClick={closeModal}>SI</button>
-                    </Modal.Footer>
-                )}
-            </Modal> */}
-
         </>
     );
 }

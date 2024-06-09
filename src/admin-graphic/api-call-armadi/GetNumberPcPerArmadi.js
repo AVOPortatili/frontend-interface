@@ -40,7 +40,7 @@ function GetNumberPcPerArmadi({ trigger }) {
 
             <Modal show={show} onHide={handleClose} dialogClassName="custom-modal">
                 <Modal.Header closeButton>
-                    <Modal.Title>Numero di PC per Armadio</Modal.Title>
+                    <Modal.Title>NUMERO DI PC PER ARMADIO</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     {numeroPc ? numeroPc : <p>Caricamento in corso...</p>}
