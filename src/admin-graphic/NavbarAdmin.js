@@ -14,6 +14,7 @@ import DeletePc from './api-call-computers/DeletePc';
 import { Accordion, Button, ListGroup, Offcanvas } from 'react-bootstrap';
 import AddNewArmadio from './api-call-armadi/AddNewArmadio';
 import ModifyArmadio from './api-call-armadi/ModifyArmadio';
+import ModifyUserRole from './api-call-utenti/ModifyUserRole';
 import LogoutModal from './LogoutModal'; //per futuro logout
 
 function NavbarAdmin() {
@@ -126,6 +127,11 @@ function NavbarAdmin() {
                                         <DeleteUser trigger={
                                                 <button type="button" className="list-group-item list-group-item-action">
                                                     Elimina utente
+                                                </button>
+                                        } />
+                                        <ModifyUserRole trigger={
+                                                <button type="button" className="list-group-item list-group-item-action">
+                                                    Cambia il ruolo di un utente
                                                 </button>
                                         } />
                                     </ListGroup>

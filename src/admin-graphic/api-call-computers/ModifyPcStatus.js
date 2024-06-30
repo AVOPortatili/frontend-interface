@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
 
+//prima o poi potrebbe essere utile dare la possibilità di modificare anche la data di ultimo aggiornamento di un pc, non solo lo stato
 const ModifyPcStatus = ({ trigger }) => {
     const [armadi, setArmadi] = useState([]);
     const [pcs, setPcs] = useState([]);
@@ -9,7 +10,7 @@ const ModifyPcStatus = ({ trigger }) => {
     const [selectedPc, setSelectedPc] = useState("");
     const [newStatus, setNewStatus] = useState("");
     const [osservazioni, setOsservazioni] = useState("");
-    const [formComplete, setFormComplete] = useState(false); //aggiunto uno stato per controllare se tutti i campi sono stati compilati
+    const [formComplete, setFormComplete] = useState(false); //stato per controllare se tutti i campi sono stati compilati
     const [isOpen, setIsOpen] = useState(false);
 
     const openModal = () =>  {setIsOpen(true); fetchArmadi(); fetchPcs()};

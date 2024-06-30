@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
 //implementa poi React-Select con multiselect
-const DeleteUser = ({ trigger }) => {
+const ModifyUserRole = ({ trigger }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [users, setUsers] = useState([]);
     const [ruoli, setRuoli] = useState([]);
@@ -78,9 +78,9 @@ const DeleteUser = ({ trigger }) => {
 
             const result = await response.json();
             if (result.message === 'success') {
-                alert("Utente eliminato con successo");
+                alert("Ruolo utente modificato con successo");
             } else {
-                alert("Eliminazione dell'utente fallita");
+                alert("Modifica del ruolo dell'utente fallita");
             }
         } catch (error) {
             console.error("Errore durante l'eliminazione dell'utente:", error);
@@ -137,4 +137,4 @@ const DeleteUser = ({ trigger }) => {
     );
 };
 
-export default DeleteUser;
+export default ModifyUserRole;
